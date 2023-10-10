@@ -1,26 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:messmaven_minor_project/nav_screens/account_screen.dart';
-import 'package:messmaven_minor_project/nav_screens/extras_screen.dart';
-import 'package:messmaven_minor_project/nav_screens/home_screen.dart';
-import 'package:messmaven_minor_project/nav_screens/surveys_screen.dart';
-
-Color cardColor = const Color(0xFF1F283E);
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
 
 class _MyAppState extends State<MyApp> {
   int _currentIndex = 0;
 
   final List<Widget> _fragments = [
-    HomeScreen(),
+    ApoorvHomeScreen(), // Add Apoorv's HomeScreen here
     ExtrasScreen(),
     SurveysScreen(),
     AccountScreen(),
@@ -58,6 +42,16 @@ class _MyAppState extends State<MyApp> {
             setState(() {
               _currentIndex = index;
             });
+
+            if (index == 0) {
+              // Handle the Home tab click, return to Apoorv's HomeScreen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ApoorvHomeScreen(),
+                ),
+              );
+            }
           },
         ),
       ),
@@ -65,4 +59,30 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
+class ApoorvHomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+      body: Column(
+        children: [
+          SizedBox(height: 200),
+          Center(
+            child: AnimatedBuilder(
+              // Rest of Apoorv's code for the Home screen
+              // ...
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text("Mess Maven",
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
+          const Text("A less messy mess!",
+              style: TextStyle(fontSize: 20, color: Colors.white)),
+        ],
+      ),
+    );
+  }
+}
