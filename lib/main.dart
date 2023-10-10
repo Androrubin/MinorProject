@@ -1,60 +1,65 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'LoginScreen.dart';
-import 'LandingPage.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(home: SplashAnimation()));
-}
-
-class SplashAnimation extends StatefulWidget {
-  @override
-  _SplashAnimationState createState() => _SplashAnimationState();
-}
-
-class _SplashAnimationState extends State<SplashAnimation>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  static const double _list = 123.234;
+class _MyAppState extends State<MyApp> {
   int _currentIndex = 0;
-  final List<Widget> _screens = [
-    SecondScreen(),
+
+  final List<Widget> _fragments = [
+    ApoorvHomeScreen(), // Add Apoorv's HomeScreen here
+    ExtrasScreen(),
+    SurveysScreen(),
+    AccountScreen(),
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 3), // Adjust the duration as needed
-    );
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: _fragments[_currentIndex],
+        bottomNavigationBar: ConvexAppBar(
+          backgroundColor: cardColor, // Navigation bar background color
+          style: TabStyle.react, // Modern style
+          curveSize: 60, // Curve size for the icons
+          items: [
+            TabItem(
+              icon: Icons.home,
+              title: 'Home',
+            ),
+            TabItem(
+              icon: Icons.search,
+              title: 'Search',
+            ),
+            TabItem(
+              icon: Icons.favorite,
+              title: 'Favorites',
+            ),
+            TabItem(
+              icon: Icons.person,
+              title: 'Profile',
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
 
-    _animation = Tween<double>(begin: -1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-
-    _controller.forward();
-
-    // Navigate to the next screen after 2 seconds
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => _screens[_currentIndex],
+            if (index == 0) {
+              // Handle the Home tab click, return to Apoorv's HomeScreen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ApoorvHomeScreen(),
+                ),
+              );
+            }
+          },
         ),
-      );
-    });
+      ),
+    );
   }
+}
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+class ApoorvHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,19 +69,8 @@ class _SplashAnimationState extends State<SplashAnimation>
           SizedBox(height: 200),
           Center(
             child: AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(
-                      _animation.value * MediaQuery.of(context).size.width, 0),
-                  child: child,
-                );
-              },
-              child: AnimatedSize(
-                duration: const Duration(seconds: 3),
-                child: Image.asset('assets/menu_item.png',
-                    height: 200, width: 200),
-              ),
+              // Rest of Apoorv's code for the Home screen
+              // ...
             ),
           ),
           const SizedBox(height: 20),
