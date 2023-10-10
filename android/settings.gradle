@@ -11,7 +11,11 @@ pluginManagement {
     includeBuild("${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle")
 
     plugins {
+        // Add the default Flutter Gradle Plugin
         id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+
+        // Add the Flutter plugin loader Gradle Plugin
+        id "dev.flutter.flutter-plugin-loader" version "1.0.0" // or "apply true"
     }
 }
 
