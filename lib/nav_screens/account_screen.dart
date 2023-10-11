@@ -30,9 +30,6 @@ class AccountScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
                             Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -124,7 +121,7 @@ class AccountScreen extends StatelessWidget {
                                     ],
                                   ),
                                 )), //Profile Info Container
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             const Text(
@@ -381,7 +378,11 @@ class AccountScreen extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-                            ClipRRect(
+                GestureDetector(
+                  onTap: (){
+                    print('Button Tapped');
+                  },
+                  child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 padding: EdgeInsets.all(20),
@@ -398,21 +399,22 @@ class AccountScreen extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     IconButton(
-                                        onPressed: goToLeaveHistory(),
-                                        icon: Image.network(
-                                          'https://www.pngall.com/wp-content/uploads/13/White-Arrow-PNG-Cutout.png',
-                                          fit: BoxFit.contain,
-                                          height: 120,
-                                          width: 120,
-                                        ))
+                                        onPressed: (){},
+                                        icon: Icon(Icons.keyboard_arrow_right
+                                        ,color: Colors.white,))
                                   ],
                                 ),
                               ),
-                            ),
+                            ),),
                             const SizedBox(
                               height: 12,
                             ),
-                            ClipRRect(
+                        GestureDetector(
+                          onTap: (){
+                            print('Button Tapped');
+                          },
+                          child:
+                          ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 padding: EdgeInsets.all(20),
@@ -429,16 +431,7 @@ class AccountScreen extends StatelessWidget {
                                           fontSize: 18),
                                     ),
                                     IconButton(
-                                        onPressed: () {
-                                          Fluttertoast.showToast(
-                                            msg: "This is a toast message",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
-                                            backgroundColor: Colors.grey,
-                                            textColor: Colors.white,
-                                            fontSize: 16.0,
-                                          );
-                                        },
+                                        onPressed: () {},
                                         icon: Image.network(
                                           'https://www.pngall.com/wp-content/uploads/13/White-Arrow-PNG-Cutout.png',
                                           fit: BoxFit.contain,
@@ -448,44 +441,49 @@ class AccountScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            ),
+                            ),),
                             const SizedBox(
                               height: 12,
                             ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                padding: EdgeInsets.all(20),
-                                color: cardColor,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Fine History',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                    IconButton(
-                                        onPressed: goToLeaveHistory(),
-                                        icon: Image.network(
-                                          'https://www.pngall.com/wp-content/uploads/13/White-Arrow-PNG-Cutout.png',
-                                          fit: BoxFit.contain,
-                                          height: 120,
-                                          width: 120,
-                                        ))
-                                  ],
-                                ),
-                              ),
-                            ),
+                           GestureDetector(
+                             onTap: (){
+                               print('Button Tapped');
+                             },
+                             child: ClipRRect(
+                               borderRadius: BorderRadius.circular(20),
+                               child: Container(
+                                 padding: EdgeInsets.all(20),
+                                 color: cardColor,
+                                 child: Row(
+                                   mainAxisAlignment:
+                                   MainAxisAlignment.spaceBetween,
+                                   children: [
+                                     Text(
+                                       'Fine History',
+                                       style: TextStyle(
+                                           color: Colors.white,
+                                           fontWeight: FontWeight.bold,
+                                           fontSize: 18),
+                                     ),
+                                     IconButton(
+                                         onPressed: (){},
+                                         icon: Image.network(
+                                           'https://www.pngall.com/wp-content/uploads/13/White-Arrow-PNG-Cutout.png',
+                                           fit: BoxFit.contain,
+                                           height: 120,
+                                           width: 120,
+                                         ))
+                                   ],
+                                 ),
+                               ),
+                             ),
+                           ) ,
                             const SizedBox(
                               height: 30,
                             ),
                           ],
                         ),
-                      ]))),
+                      )),
         ));
   }
 
