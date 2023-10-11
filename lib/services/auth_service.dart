@@ -6,23 +6,6 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   //Google Sign in
-
-  Future<void> handleSignIn() async {
-    try {
-      GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-        AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleAuth.idToken,
-          accessToken: googleAuth.accessToken,
-        );
-        await _auth.signInWithCredential(credential);
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> BaseScreen()));
-      }
-    } catch (e) {
-      print("Error signing in with google $e");
-    }
-  }
   Future<void> handleSignOut() async {
     try {
       await _googleSignIn.signOut();

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:messmaven_minor_project/login&onboarding/auth.dart';
+import 'package:messmaven_minor_project/login&onboarding/enter_details_screen.dart';
 import 'package:messmaven_minor_project/services/auth_service.dart';
 
 import '../nav_screens/base_screen.dart';
@@ -15,7 +17,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>{
   @override
   Widget build(BuildContext context) {
-    AuthService authService = AuthService();
+    final AuthMethods _authMethods = AuthMethods();
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+    //AuthService authService = AuthService();
     double screenWidth = MediaQuery.of(context).size.width;
     return
       Scaffold(
@@ -57,12 +61,19 @@ class _LoginScreenState extends State<LoginScreen>{
                           ),
                           child: GestureDetector(
                             onTap: () async {
-                              authService.handleSignOut();
-                              GoogleSignIn().disconnect();
-                              await authService.handleSignIn();
-                              Future.delayed(Duration(seconds: 1),(){
+                             await _googleSignIn.signOut();
+                             //await _googleSignIn.disconnect();
+                              //authService.handleSignOut();
+                              //GoogleSignIn().disconnect();
+                              int res = await _authMethods.signInWithGoogle();
+                              print(res);
+                              if(res == 1){
                                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> BaseScreen()));
-                              });
+                              }
+                              if(res == 2){
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> StudentInfoForm()));
+                              }
+                              // await authService.handleSignIn();
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 12.0,right: 12, top: 20, bottom: 20),

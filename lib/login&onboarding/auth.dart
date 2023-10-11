@@ -1,34 +1,47 @@
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:messmaven_minor_project/login&onboarding/google_auth_screen.dart';
-import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<User?>(
+class AuthMethods {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, AsyncSnapshot<User?> snapshot){
-          print("Hello");
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if(snapshot.hasData)
-          {
-            print(snapshot.data.toString());
-            return BaseScreen();
-          }
-          else{
-            print('Null snapshot');
-            return LoginScreen();
-          }
-        },
-      )
-    );
+  Future<int> signInWithGoogle() async {
+    int res = 1;
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn
+          .signIn();
+      final GoogleSignInAuthentication? googleSignInAuth = await googleSignInAccount
+          ?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuth?.accessToken,
+          idToken: googleSignInAuth?.idToken
+      );
+
+      UserCredential userCredential = await _auth
+          .signInWithCredential(credential);
+
+      //print("$userCredential");
+      User? user = userCredential.user;
+      if (user != null) {
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          res += 1;
+          // await _firestore.collection('Users').doc(user.uid).set({
+          //   'userName': user.displayName,
+          // });
+        }
+        res += 1;
+      }
+    } catch (e) {
+      print(e);
+      res = 0;
+    }
+    return res;
   }
+
 }

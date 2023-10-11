@@ -1,13 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../components/category_progress_bar.dart';
 
-class AccountScreen extends StatelessWidget {
-  Color cardColor = const Color(0xFF1F283E);
+class AccountScreen extends StatefulWidget {
+  const AccountScreen({super.key});
+@override
+State<AccountScreen> createState() => _AccountScreenState();
+}
+class _AccountScreenState extends State<AccountScreen>{
 
+Color cardColor = const Color(0xFF1F283E);
+FirebaseFirestore db = FirebaseFirestore.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
+String name="";
+String rollNo="";
+String hostel="";
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -23,12 +36,39 @@ class AccountScreen extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Details',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Details',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+
+                            Container(
+                              padding: EdgeInsets.only(top: 8, bottom: 8, right: 15,left: 15),
+                              decoration: BoxDecoration(
+                                color: cardColor,
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Logout',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Icon(Icons.logout_rounded,color: Colors.white,)
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                             Container(
                                 decoration: BoxDecoration(
@@ -57,7 +97,7 @@ class AccountScreen extends StatelessWidget {
                                             BorderRadius.circular(20.0),
                                         // Adjust the radius as needed
                                         child: Image.network(
-                                          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80',
+                                          '${auth.currentUser!.photoURL}',
                                           fit: BoxFit.cover,
                                           height: 120,
                                           width: 120,
@@ -66,7 +106,7 @@ class AccountScreen extends StatelessWidget {
                                       SizedBox(
                                         width: 15,
                                       ),
-                                      const Column(
+                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         crossAxisAlignment:
@@ -80,7 +120,8 @@ class AccountScreen extends StatelessWidget {
                                                 color: Colors.grey),
                                             textAlign: TextAlign.start,
                                           ),
-                                          Text('Shreya Kumari',
+                                          Text(name
+                                          ,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
@@ -95,7 +136,7 @@ class AccountScreen extends StatelessWidget {
                                                   fontSize: 12,
                                                   color: Colors.grey),
                                               textAlign: TextAlign.start),
-                                          Text('21124102',
+                                          Text(rollNo,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
@@ -110,7 +151,7 @@ class AccountScreen extends StatelessWidget {
                                                   fontSize: 12,
                                                   color: Colors.grey),
                                               textAlign: TextAlign.start),
-                                          Text('MGH-E 117',
+                                          Text(hostel,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
@@ -400,7 +441,7 @@ class AccountScreen extends StatelessWidget {
                                     ),
                                     IconButton(
                                         onPressed: (){},
-                                        icon: Icon(Icons.keyboard_arrow_right
+                                        icon: Icon(Icons.arrow_forward_rounded
                                         ,color: Colors.white,))
                                   ],
                                 ),
@@ -432,13 +473,9 @@ class AccountScreen extends StatelessWidget {
                                     ),
                                     IconButton(
                                         onPressed: () {},
-                                        icon: Image.network(
-                                          'https://www.pngall.com/wp-content/uploads/13/White-Arrow-PNG-Cutout.png',
-                                          fit: BoxFit.contain,
-                                          height: 120,
-                                          width: 120,
-                                        ))
-                                  ],
+                                        icon: Icon(Icons.arrow_forward_rounded
+                                          ,color: Colors.white,)
+                                    )],
                                 ),
                               ),
                             ),),
@@ -467,13 +504,9 @@ class AccountScreen extends StatelessWidget {
                                      ),
                                      IconButton(
                                          onPressed: (){},
-                                         icon: Image.network(
-                                           'https://www.pngall.com/wp-content/uploads/13/White-Arrow-PNG-Cutout.png',
-                                           fit: BoxFit.contain,
-                                           height: 120,
-                                           width: 120,
-                                         ))
-                                   ],
+                                         icon: Icon(Icons.arrow_forward_rounded
+                                           ,color: Colors.white,)
+                                     )],
                                  ),
                                ),
                              ),
@@ -487,5 +520,15 @@ class AccountScreen extends StatelessWidget {
         ));
   }
 
-  goToLeaveHistory() {}
+  Future<void> getData()async{
+
+    User? user = auth.currentUser;
+    final DocumentSnapshot data = await db.collection('Users').doc(user!.uid).get();
+    name = data.get('name');
+    rollNo = data.get('roll no');
+    hostel = data.get('hostel');
+
+  }
+
+
 }

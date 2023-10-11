@@ -2,17 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
-import 'package:messmaven_minor_project/nav_screens/home_screen.dart';
 import 'google_auth_screen.dart';
 
 Color cardColor = const Color(0xFF1F283E);
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
-
 class _SplashScreenState extends State<SplashScreen>with SingleTickerProviderStateMixin {
 
   @override
