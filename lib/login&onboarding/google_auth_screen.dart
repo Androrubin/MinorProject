@@ -6,7 +6,6 @@ import 'package:messmaven_minor_project/services/auth_service.dart';
 
 import '../nav_screens/base_screen.dart';
 Color cardColor = const Color(0xFF1F283E);
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -14,8 +13,6 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 class _LoginScreenState extends State<LoginScreen>{
-
-
   @override
   Widget build(BuildContext context) {
     AuthService authService = AuthService();
@@ -59,11 +56,13 @@ class _LoginScreenState extends State<LoginScreen>{
                             color: Colors.white,
                           ),
                           child: GestureDetector(
-                            onTap: (){
+                            onTap: () async {
                               authService.handleSignOut();
                               GoogleSignIn().disconnect();
-                              authService.handleSignIn();
-
+                              await authService.handleSignIn();
+                              Future.delayed(Duration(seconds: 1),(){
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> BaseScreen()));
+                              });
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 12.0,right: 12, top: 20, bottom: 20),

@@ -6,7 +6,6 @@ import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
 
 import 'firebase_options.dart';
 
-
 void main() async {
 WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

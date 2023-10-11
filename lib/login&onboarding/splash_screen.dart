@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
 import 'package:messmaven_minor_project/nav_screens/home_screen.dart';
-
 import 'google_auth_screen.dart';
 
 Color cardColor = const Color(0xFF1F283E);
@@ -19,11 +19,17 @@ class _SplashScreenState extends State<SplashScreen>with SingleTickerProviderSta
   void initState() {
     // TODO: implement initState
     super.initState();
+    FirebaseAuth auth = FirebaseAuth.instance;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    Future.delayed(Duration(seconds: 2),(){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> LoginScreen()));
-    });
-    
+    if(auth.currentUser!= null){
+      Future.delayed(Duration(seconds: 2),(){
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> BaseScreen()));
+      });
+    }else{
+      Future.delayed(Duration(seconds: 2),(){
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> LoginScreen()));
+      });
+    }
   }
   
   @override
@@ -35,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen>with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
