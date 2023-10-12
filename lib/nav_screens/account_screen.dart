@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:messmaven_minor_project/services/auth_service.dart';
 
 import '../components/category_progress_bar.dart';
+import '../login&onboarding/google_auth_screen.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -20,6 +22,7 @@ String rollNo="";
 String hostel="";
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     getData();
     return Scaffold(
         appBar: AppBar(
@@ -46,26 +49,31 @@ String hostel="";
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-
-                            Container(
-                              padding: EdgeInsets.only(top: 8, bottom: 8, right: 15,left: 15),
-                              decoration: BoxDecoration(
-                                color: cardColor,
-                                borderRadius: BorderRadius.circular(15)
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Logout',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
+                            GestureDetector(
+                              onTap: (){
+                              _auth.signOut();
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> LoginScreen()));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(top: 8, bottom: 8, right: 15,left: 15),
+                                decoration: BoxDecoration(
+                                  color: cardColor,
+                                  borderRadius: BorderRadius.circular(15)
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Logout',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Icon(Icons.logout_rounded,color: Colors.white,)
-                                ],
+                                    SizedBox(width: 10,),
+                                    Icon(Icons.arrow_forward,color: Colors.white,)
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -120,8 +128,7 @@ String hostel="";
                                                 color: Colors.grey),
                                             textAlign: TextAlign.start,
                                           ),
-                                          Text(name
-                                          ,
+                                          Text('Abhishek Bharti',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
@@ -136,7 +143,7 @@ String hostel="";
                                                   fontSize: 12,
                                                   color: Colors.grey),
                                               textAlign: TextAlign.start),
-                                          Text(rollNo,
+                                          Text('21124004',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
@@ -151,7 +158,7 @@ String hostel="";
                                                   fontSize: 12,
                                                   color: Colors.grey),
                                               textAlign: TextAlign.start),
-                                          Text(hostel,
+                                          Text('MBH-A 332',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
