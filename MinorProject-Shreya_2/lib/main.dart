@@ -26,8 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.orange),
       home: SplashScreen(),
       routes: {
-        '/home': (context) =>
-            BaseScreen(), // Navigate to HomeScreen after the splash screen
+        '/home': (context) => BaseScreen(),
       },
     );
   }

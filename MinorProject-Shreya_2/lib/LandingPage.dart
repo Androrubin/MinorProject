@@ -77,7 +77,7 @@ class _SecondScreenState extends State<SecondScreen> {
                     ),
                   ),
                   buildMenuCard(
-                    const Color.fromARGB(255, 31, 40, 62),
+                    Color.fromARGB(255, 31, 40, 62),
                     'Breakfast',
                     getMenu(selectedDay, 0),
                   ),
@@ -124,38 +124,40 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   Widget buildMenuCard(Color color, String title, String details) {
-    return Card(
-      color: color,
-      elevation: 4.0,
-      margin: EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: Card(
-          color: Colors.white,
-          elevation: 4.0,
-          child: Container(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '$title Menu:',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Color.fromARGB(255, 31, 40, 62),
+    return Container(
+      margin: EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
+      child: Card(
+        color: color,
+        elevation: 4.0,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 0.0, right: 3.0, top: 0.0),
+          child: Card(
+            color: Color.fromARGB(255, 31, 40, 62),
+            elevation: 4.0,
+            child: Container(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '$title Menu:',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  details,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color.fromARGB(255, 31, 40, 62),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    details,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
