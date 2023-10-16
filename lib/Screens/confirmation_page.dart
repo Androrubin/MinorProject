@@ -87,6 +87,8 @@ class ConfirmationPage extends StatelessWidget {
                           color: Colors.green,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
+
+
                         ),
                       ),
                     );
