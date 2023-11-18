@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:messmaven_minor_project/Screens/place_order.dart';
 import 'package:messmaven_minor_project/models/food_items.dart';
@@ -13,6 +14,7 @@ Color themecolor = Color(0xFF1F283E);
 Color searchBarcolor = Color(0xFF9EA2AD);
 Color cardColor = Color.fromRGBO(0x74, 0x74, 0x74, 0.08);
 Color textColor = Color(0xFF36454F);
+// List<FoodItem> food_item = [];
 final List<FoodItem> selectedItems =[];
 List<FoodItem>filteredItems=[];
 final TextEditingController searchController = TextEditingController();
@@ -21,9 +23,39 @@ bool isButtonVisible = false;
 
 
 
-
-
 class _ExtraPageState extends State<ExtraPage>{
+
+
+  // @override void initState (){
+  //   fetchRecords ();
+  //   super.initState();
+  // }
+  //
+  // fetchRecords () async {
+  //   var foodItemRef = await FirebaseFirestore.instance
+  //                    .collection('Admin')
+  //                     .doc('Mess 1')
+  //                     .collection('Extra Items').snapshots();
+  //
+  //   mapRecords (foodItemRef as QuerySnapshot<Map<String, dynamic>>);
+  //
+  // }
+  //
+  // mapRecords(QuerySnapshot<Map<String, dynamic>> foodItemRef){
+  //
+  //    var _list = foodItemRef.docs.map((item) => FoodItem
+  //               (id: item.id, price: item['Item Price'],
+  //                 image: 'assets/images/omlette.png',
+  //                 name: item['Item Name'],
+  //                 itemCount: item['Item Quantity'],
+  //                 isSelected: false,
+  //   ),
+  //   ).toList();
+  //
+  //   setState(() {
+  //     food_item = _list ;
+  //   });
+  // }
 
   String searchText = '';
 
@@ -86,7 +118,7 @@ class _ExtraPageState extends State<ExtraPage>{
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children:[
-                          Text('Hungry!',
+                          Text("Hungry !",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 32,
@@ -295,7 +327,7 @@ class _ItemCardState extends State<ItemCard> {
                           height: 4,
                         ),
                         Image.asset(
-                          widget.foodItem.image,
+                          widget.foodItem.image ?? " ",
                           width: 120,
                           height: 120,
                         ),
@@ -319,7 +351,7 @@ class _ItemCardState extends State<ItemCard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    widget.foodItem.price.toString(),
+                                    '₹'+widget.foodItem.price.toString(),
                                     style: TextStyle(
                                       color: Colors.red,
                                       fontSize: 16,

@@ -4,6 +4,7 @@ import 'package:messmaven_minor_project/RegisterScreen.dart';
 import 'package:messmaven_minor_project/login&onboarding/google_auth_screen.dart';
 import 'package:messmaven_minor_project/login&onboarding/splash_screen.dart';
 import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
+import 'package:messmaven_minor_project/nav_screens/menu_page.dart';
 
 import 'firebase_options.dart';
 

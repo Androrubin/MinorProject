@@ -32,10 +32,23 @@ Future<void> captureImage() async {
 }
 
 Color cardColor = const Color(0xFF1F283E);
+List<String> hostelOptions = ['Bh1', 'Bh2', 'MBH', 'MGH'];
+String selectedHostel = 'Bh1';
 
 class _StudentInfoFormState extends State<StudentInfoForm> {
   void initState() {
     super.initState();
+
+    //get list from firebase
+    getHostelsFromFirestore().then((hostels) {
+      setState(() {
+        hostelOptions = hostels;
+        // Set the default selection here if needed
+        selectedHostel = hostelOptions.isNotEmpty ? hostelOptions[0] : '';
+      });
+    });
+
+
     initCamera().then((_) {
       cameraController = CameraController(cameras[0], ResolutionPreset.medium);
       cameraController!.initialize().then((_) {
@@ -78,7 +91,7 @@ class _StudentInfoFormState extends State<StudentInfoForm> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   Container(
                       height: 120,
@@ -118,7 +131,7 @@ class _StudentInfoFormState extends State<StudentInfoForm> {
                         ],
                       )),
                   SizedBox(
-                    height: 70,
+                    height: 30,
                   ),
                   Text(
                     'Enter Student Information',
@@ -150,6 +163,37 @@ class _StudentInfoFormState extends State<StudentInfoForm> {
                       labelText: 'Hostel & Room No',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20)),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: selectedHostel,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedHostel = newValue!;
+                                });
+                              },
+                              items: hostelOptions.map((String option) {
+                                return DropdownMenuItem<String>(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList(),
+                              underline: Container(), // Remove the default underline
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 20.0),
@@ -207,4 +251,26 @@ class _StudentInfoFormState extends State<StudentInfoForm> {
     );
   }
 
+}
+
+
+
+Future<List<String>> getHostelsFromFirestore() async {
+  List<String> hostels = [];
+
+  try {
+    QuerySnapshot querySnapshot =
+    await FirebaseFirestore.instance.collection('Admin').get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        String hostelName = doc.id;
+        hostels.add(hostelName);
+      }
+    }
+  } catch (e) {
+    print('Error fetching hostels: $e');
+  }
+
+  return hostels;
 }

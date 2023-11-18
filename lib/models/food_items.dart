@@ -1,3 +1,5 @@
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class FoodItem {
@@ -65,13 +67,54 @@ List<FoodItem> food_item = [
 
   ),
   FoodItem(
-    id: 6,
-    image: "assets/images/hot_dog.png" ,
-    price: 30,
-    name: "Hot dog",
-    itemCount: 1,
-    isSelected: false,
+      id: 6,
+      image: "assets/images/hot_dog.png" ,
+      price: 30,
+      name: "Hot dog",
+      itemCount: 1,
+      isSelected: false,
 
-  ),
+      ),
 
 ];
+
+
+// FoodItem foodItemsFromJson(String str) => FoodItem.fromJson(json.decode(str));
+//
+// String foodItemsToJson(FoodItem data) => json.encode(data.toJson());
+//
+// class FoodItem {//   final String id;
+//   final String? image;
+//   final int price;
+//   final String name;
+//   int itemCount;
+//   bool isSelected;
+//
+//   FoodItem({
+//     required this.id,
+//      this.image,
+//     required this.price,
+//     required this.name,
+//     required this.itemCount,
+//     required this.isSelected,
+//   });
+//
+//   factory FoodItem.fromJson(Map<String, dynamic> json) => FoodItem(
+//     id: json["id"],
+//     image: json["image"],
+//     price: json["price"],
+//     name: json["name"],
+//     itemCount: json["itemCount"],
+//     isSelected: json["isSelected"],
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "id": id,
+//     "image": image,
+//     "price": price,
+//     "name": name,
+//     "itemCount": itemCount,
+//     "isSelected": isSelected,
+//   };
+// }
+

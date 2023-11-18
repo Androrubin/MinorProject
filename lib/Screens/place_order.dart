@@ -220,7 +220,7 @@ class _selectedItemCardState extends State<SelectedItemCard> {
                           height: 4,
                         ),
                         Image.asset(
-                          widget.selectedFoodItem.image,
+                          widget.selectedFoodItem.image ?? " ",
                           width: 100,
                           height: 100,
                         ),
