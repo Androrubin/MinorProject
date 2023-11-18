@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:messmaven_minor_project/login&onboarding/google_auth_screen.dart';
 import 'package:messmaven_minor_project/login&onboarding/splash_screen.dart';
 import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
-
+import 'package:messmaven_minor_project/nav_screens/transactions/extra_items_history.dart';
+import 'package:messmaven_minor_project/nav_screens/transactions/leave_history.dart';
 import 'firebase_options.dart';
 
 void main() async {
