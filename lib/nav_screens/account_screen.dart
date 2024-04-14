@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:messmaven_minor_project/Screens/extra_history/extraitemDrop.dart';
+import 'package:messmaven_minor_project/Screens/leave_history/leaveSL.dart';
 import 'package:messmaven_minor_project/services/auth_service.dart';
 
 import '../components/category_progress_bar.dart';
@@ -428,7 +430,10 @@ class _AccountScreenState extends State<AccountScreen>{
                     ),
                     GestureDetector(
                       onTap: (){
-                        print('Button Tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LeaveHistoryPage()),
+                        );
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
@@ -459,7 +464,10 @@ class _AccountScreenState extends State<AccountScreen>{
                     ),
                     GestureDetector(
                       onTap: (){
-                        print('Button Tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Extras()),
+                        );
                       },
                       child:
                       ClipRRect(

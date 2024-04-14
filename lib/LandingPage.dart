@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:messmaven_minor_project/LeaveFragment.dart';
+import 'package:messmaven_minor_project/Screens/leave_history/leave.dart';
 import 'LeaveFragment.dart';
 import 'CompleteMenuScreen.dart';
 import 'AnnouncementScreen.dart';
@@ -103,7 +104,7 @@ class _SecondScreenState extends State<SecondScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LeaveApplicationPage()));
+                              builder: (context) => LeavePage()));
                     },
                   ),
                   const SizedBox(height: 20.0),
