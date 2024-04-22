@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     FirebaseAuth auth = FirebaseAuth.instance;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -52,7 +51,8 @@ class _SplashScreenState extends State<SplashScreen>
             style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Colors.white)),
+                color: Colors.white)
+        ),
       ),
     );
   }

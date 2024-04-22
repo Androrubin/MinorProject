@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:messmaven_minor_project/login&onboarding/google_auth_screen.dart';
 import 'package:messmaven_minor_project/login&onboarding/splash_screen.dart';
 import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
-
 import 'firebase_options.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
