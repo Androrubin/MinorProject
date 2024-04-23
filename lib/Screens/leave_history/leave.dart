@@ -179,7 +179,7 @@ class _LeavePageState extends State<LeavePage> {
               style: TextStyle(fontSize: 18,color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
-              primary: const Color.fromARGB(255, 5, 53, 91), // Apply button color
+              backgroundColor: const Color.fromARGB(255, 5, 53, 91), // Apply button color
               padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -348,7 +348,7 @@ class _LeavePageState extends State<LeavePage> {
               style: TextStyle(fontSize: 18,color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
-              primary: const Color.fromARGB(255, 5, 53, 91), // Apply button color
+              backgroundColor: const Color.fromARGB(255, 5, 53, 91), // Apply button color
               padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
