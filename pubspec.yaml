@@ -45,7 +45,9 @@ dependencies:
   cloud_firestore: ^4.9.3
   image_picker: any
   camera: any
+  flutter_calendar_carousel: any
   image: any
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:

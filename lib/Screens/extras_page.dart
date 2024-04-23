@@ -287,7 +287,7 @@ class _ItemCardState extends State<ItemCard> {
                           height: 120,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(2.0),
+                          padding: const EdgeInsets.all(0.0),
                           child: Text(
                             widget.foodItem.name,
                             style: TextStyle(
