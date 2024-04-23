@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class Extras extends StatefulWidget {
@@ -21,8 +19,17 @@ class DateItem {
   final String date;
   final Map<String, List<MenuItem>> mealItems;
   bool isExpanded;
+  double totalRate;
 
-  DateItem({required this.date, required this.mealItems, this.isExpanded = false});
+  DateItem({required this.date, required this.mealItems, this.isExpanded = false})
+      : totalRate = 0 {
+    calculateTotalRate();
+  }
+  
+  void calculateTotalRate() {
+    totalRate =
+        mealItems.values.expand((items) => items).map((item) => item.rate * item.quantity).reduce((a, b) => a + b);
+  }
 }
 
 class _ExtrasState extends State<Extras> {
@@ -48,7 +55,7 @@ class _ExtrasState extends State<Extras> {
       date: "April 11, 2024",
       mealItems: {
         "Breakfast": [
-          MenuItem(itemName: "Toast", quantity: 2, rate: 1.5),
+          MenuItem(itemName: "Toast", quantity: 2, rate: 3.5),
           MenuItem(itemName: "Eggs", quantity: 1, rate: 2.0),
         ],
         "Lunch": [
@@ -68,7 +75,7 @@ class _ExtrasState extends State<Extras> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Extra Item History",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -89,12 +96,8 @@ class _ExtrasState extends State<Extras> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: ListView.builder(
-            padding: EdgeInsets.only(top: 30),
-            shrinkWrap: true,
-            itemCount: dateItems.length,
-            itemBuilder: (BuildContext context, int index) {
-              DateItem dateItem = dateItems[index];
+          child: Column(
+            children: dateItems.map((dateItem) {
               return Card(
                 elevation: 5,
                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -109,17 +112,17 @@ class _ExtrasState extends State<Extras> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
+                          color: Colors.grey[400],
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text(
-                                dateItem.date,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                "${dateItem.date}     Amount: ₹${dateItem.totalRate.toStringAsFixed(2)}",
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                               Icon(dateItem.isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
                             ],
@@ -128,70 +131,55 @@ class _ExtrasState extends State<Extras> {
                       ),
                     ),
                     if (dateItem.isExpanded)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: dateItem.mealItems.entries.map((entry) {
-                            String mealCategory = entry.key;
-                            List<MenuItem> items = entry.value;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  mealCategory,
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                                ),
-                                SizedBox(height: 10),
-                                Column(
-                                  children: items.map((item) {
-                                    return Card(
-                                      elevation: 4,
-                                      margin: EdgeInsets.symmetric(vertical: 4),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              item.itemName,
-                                              style: TextStyle(fontWeight: FontWeight.bold),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  "Quantity: ${item.quantity}",
-                                                ),
-                                                Text(
-                                                  "Rate: \$${item.rate}",
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                      Container(
+                        color: Colors.white,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left:15.0,right: 15),
+                              child: Column(
+                                children: dateItem.mealItems.entries.map((entry) {
+                                  String mealCategory = entry.key;
+                                  List<MenuItem> items = entry.value;
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        mealCategory,
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                                       ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            );
-                          }).toList(),
+                                      SizedBox(height: 10),
+                                      DataTable(
+                                        columns: [
+                                          DataColumn(label: Text('Item Name',style: TextStyle(fontWeight: FontWeight.bold),)),
+                                          DataColumn(label: Text('Quantity',style: TextStyle(fontWeight: FontWeight.bold))),
+                                          DataColumn(label: Text('Rate',style: TextStyle(fontWeight: FontWeight.bold))),
+                                        ],
+                                        rows: items.map((item) {
+                                          return DataRow(cells: [
+                                            DataCell(Text(item.itemName)),
+                                            DataCell(Text(item.quantity.toString())),
+                                            DataCell(Text("₹${item.rate.toStringAsFixed(2)}")),
+                                          ]);
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                   ],
                 ),
               );
-            },
+            }).toList(),
           ),
         ),
       ),
     );
   }
 }
-
-// void main() {
-//   runApp(MaterialApp(
-//     home: Extras(),
-//   ));
-// }

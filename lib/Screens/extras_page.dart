@@ -328,7 +328,8 @@ class _ItemCardState extends State<ItemCard> {
                                   Visibility(
                                     visible: !widget.foodItem.isSelected,
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                      },
                                       icon: Image.asset(
                                         "assets/icons/add_item.png",
                                         width: 24,

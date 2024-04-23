@@ -55,6 +55,7 @@ class _LeavePageState extends State<LeavePage> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black54
                 ),
               ),
             );
@@ -109,80 +110,97 @@ class _LeavePageState extends State<LeavePage> {
             ),
           ),
           SizedBox(height: 16),
-          Row(
+          Column(
             children: [
-              Checkbox(
-                value: selectedMeals.contains('Breakfast'),
-                onChanged: (value) {
-                  setState(() {
-                    if (value!) {
-                      selectedMeals.add('Breakfast');
-                    } else {
-                      selectedMeals.remove('Breakfast');
-                    }
-                  });
-                },
-              ),
-              Text(
+              Row(
+                children: [
+                  Checkbox(
+                    value: selectedMeals.contains('Breakfast'),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value!) {
+                          selectedMeals.add('Breakfast');
+                        } else {
+                          selectedMeals.remove('Breakfast');
+                        }
+                      });
+                    },
+                  ),
+               Text(
                 'Breakfast',
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(width: 20),
-              Checkbox(
-                value: selectedMeals.contains('Lunch'),
-                onChanged: (value) {
-                  setState(() {
-                    if (value!) {
-                      selectedMeals.add('Lunch');
-                    } else {
-                      selectedMeals.remove('Lunch');
-                    }
-                  });
-                },
-              ),
+              ],
+          ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Checkbox(
+                    value: selectedMeals.contains('Lunch'),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value!) {
+                          selectedMeals.add('Lunch');
+                        } else {
+                          selectedMeals.remove('Lunch');
+                        }
+                      });
+                    },
+                  ),
+                
               Text(
                 'Lunch',
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(width: 20),
-              Checkbox(
-                value: selectedMeals.contains('Dinner'),
-                onChanged: (value) {
-                  setState(() {
-                    if (value!) {
-                      selectedMeals.add('Dinner');
-                    } else {
-                      selectedMeals.remove('Dinner');
-                    }
-                  });
-                },
+              ],
               ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Checkbox(
+                    value: selectedMeals.contains('Dinner'),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value!) {
+                          selectedMeals.add('Dinner');
+                        } else {
+                          selectedMeals.remove('Dinner');
+                        }
+                      });
+                    },
+                  ),
+                
               Text(
                 'Dinner',
                 style: TextStyle(fontSize: 16),
               ),
+              ],
+              ),
             ],
           ),
-          SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () {
-              if (selectedMeals.isNotEmpty) {
-                // Proceed with single meal leave
-                print('Applying for single meal leave for $selectedMeals');
-              } else {
-                // Show error message or handle empty selection
-                print('Please select at least one meal to apply for leave');
-              }
-            },
-            child: Text(
-              'Apply',
-              style: TextStyle(fontSize: 18,color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: const Color.fromARGB(255, 5, 53, 91), // Apply button color
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          SizedBox(height: 24,),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ElevatedButton(
+              onPressed: () {
+                if (selectedMeals.isNotEmpty) {
+                  // Proceed with single meal leave
+                  print('Applying for single meal leave for $selectedMeals');
+                } else {
+                  // Show error message or handle empty selection
+                  print('Please select at least one meal to apply for leave');
+                }
+              },
+              child: Text(
+                'Apply',
+                style: TextStyle(fontSize: 18,color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color.fromARGB(255, 5, 53, 91), // Apply button color
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
           ),
@@ -191,6 +209,9 @@ class _LeavePageState extends State<LeavePage> {
     ),
   );
 }
+
+
+
 
 
   Widget _buildLongTermLeaveCard() {
@@ -333,25 +354,28 @@ class _LeavePageState extends State<LeavePage> {
             ),
           ),
           SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () {
-              if (selectedMeals.isNotEmpty) {
-                // Proceed with single meal leave
-                print('Applying for single meal leave for $selectedMeals');
-              } else {
-                // Show error message or handle empty selection
-                print('Please select at least one meal to apply for leave');
-              }
-            },
-            child: Text(
-              'Apply',
-              style: TextStyle(fontSize: 18,color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: const Color.fromARGB(255, 5, 53, 91), // Apply button color
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ElevatedButton(
+              onPressed: () {
+                if (selectedMeals.isNotEmpty) {
+                  // Proceed with single meal leave
+                  print('Applying for single meal leave for $selectedMeals');
+                } else {
+                  // Show error message or handle empty selection
+                  print('Please select at least one meal to apply for leave');
+                }
+              },
+              child: Text(
+                'Apply',
+                style: TextStyle(fontSize: 18,color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color.fromARGB(255, 5, 53, 91), // Apply button color
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
           ),
