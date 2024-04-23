@@ -15,7 +15,6 @@ class Review {
     required this.varietyOfDishes,
   });
 
-  // Convert review data to a map for storing in Firestore
   Map<String, dynamic> toMap() {
     return {
       'rating': rating,

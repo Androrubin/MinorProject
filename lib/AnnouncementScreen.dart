@@ -1,102 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+// Announcement model
+class Announcement {
+  final String title;
+  final String description;
+  final DateTime timestamp;
+
+  Announcement({
+    required this.title,
+    required this.description,
+    required this.timestamp,
+  });
+}
 
 class AnnouncementsScreen extends StatelessWidget {
-  const AnnouncementsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Stack(
-          children: [
-            Image(
-              image: Image.asset('assets/announcements.png').image,
-              height: 200.0,
-              width: double.infinity,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 220.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 31, 40, 62), // Background color
-                  borderRadius: BorderRadius.circular(16.0), // Rounded borders
-                ),
-                padding: EdgeInsets.all(16.0), // Padding for the container
-                child: Stack(
-                  children: [
-                    Text(
-                      "Announcements!",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: Colors.white, // Title text color
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 80.0),
-                      child: ListView(
-                        children: [
-                          AnnouncementCard(
-                              "Chola will be there instead of Rajma",
-                              "23/10/23"),
-                          AnnouncementCard(
-                              "Mess timing will remain as regular on the occasion of Holi",
-                              "13/10/23"),
-                          AnnouncementCard(
-                              "Students are advised to take glasses to sink after eating",
-                              "2/10/23"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Announcements'),
+      ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('announcements')
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+          List<Announcement> announcements = snapshot.data!.docs
+              .map((doc) => Announcement(
+            title: doc['title'],
+            description: doc['description'],
+            timestamp: (doc['timestamp'] as Timestamp).toDate(),
+          ))
+              .toList();
+          return ListView.builder(
+            itemCount: announcements.length,
+            itemBuilder: (context, index) {
+              return AnnouncementCard(announcement: announcements[index]);
+            },
+          );
+        },
       ),
     );
   }
 }
 
 class AnnouncementCard extends StatelessWidget {
-  final String title;
-  final String date;
+  final Announcement announcement;
 
-  AnnouncementCard(this.title, this.date);
+  const AnnouncementCard({Key? key, required this.announcement})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Color.fromARGB(255, 31, 40, 62), // Title text color
-              ),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              "Date: $date",
-              style: const TextStyle(
-                fontSize: 16,
-                color: Color.fromARGB(255, 0, 0, 0), // Date text color
-              ),
-            ),
-          ],
+      margin: EdgeInsets.all(8.0),
+      child: ListTile(
+        title: Text(announcement.title),
+        subtitle: Text(announcement.description),
+        trailing: Text(
+          '${announcement.timestamp.day}/${announcement.timestamp.month}/${announcement.timestamp.year}',
         ),
       ),
     );
   }
 }
+
+

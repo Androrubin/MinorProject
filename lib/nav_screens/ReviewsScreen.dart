@@ -323,7 +323,6 @@ class _ReviewPageState extends State<ReviewPage> {
         valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
       ),
     );
-
   }
   void saveReview() async {
     // Save the review data to Firestore
