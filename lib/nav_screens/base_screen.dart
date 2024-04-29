@@ -5,6 +5,7 @@ import 'package:messmaven_minor_project/login&onboarding/splash_screen.dart';
 import 'package:messmaven_minor_project/nav_screens/surveys_screen.dart';
 
 import '../Screens/extras_page.dart';
+import 'ReviewsScreen.dart';
 import 'account_screen.dart';
 import 'extras_screen.dart';
 
@@ -21,7 +22,7 @@ class _MyAppState extends State<BaseScreen> {
   final List<Widget> _fragments = [
     SecondScreen(),
     ExtraPage(),
-    SurveysScreen(),
+    ReviewPage(),
     AccountScreen(),
   ];
 
@@ -47,8 +48,8 @@ class _MyAppState extends State<BaseScreen> {
               title: 'Extra',
             ),
             TabItem(
-              icon: Icons.favorite,
-              title: 'Favorites',
+              icon: Icons.reviews,
+              title: 'Review',
             ),
             TabItem(
               icon: Icons.person,
@@ -65,3 +66,5 @@ class _MyAppState extends State<BaseScreen> {
     );
   }
 }
+
+

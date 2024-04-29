@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -8,10 +11,15 @@ class LeaveApplicationPage extends StatefulWidget {
 }
 
 class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
-  bool? isSingleDayLeave = true;
+  bool? isSingleDayLeave = false;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
+  String userName = '';
+  String? startMeal='Breakfast';
+  String? endMeal='Dinner';
 
+  // List of available meal options
+  List<String> meals = ['Breakfast', 'Lunch', 'Dinner'];
   void _applyLeave() {
     showDialog(
       context: context,
@@ -29,17 +37,11 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
             TextButton(
               child: Text('Confirm'),
               onPressed: () {
-                // Perform leave application logic here
-                if (isSingleDayLeave == true) {
-                  // Handle single-day leave logic
-                } else {
-                  // Handle multi-day leave logic
-                }
+
 
                 // Close the confirmation dialog
                 Navigator.of(context).pop();
-
-                // Show a success message
+                saveDataAndShowDialog();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Leave applied successfully!'),
@@ -53,105 +55,204 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
       },
     );
   }
+  int calculateTotalMeals() {
+    int totalMeals = 0;
 
+    // Calculate total meals if startDate and endDate are not null
+    if (startDate != null && endDate != null) {
+      // Calculate the difference in days between startDate and endDate
+      int daysDifference = endDate.difference(startDate).inDays;
+
+      // Adding one meal for the start day
+      if (startMeal == 'Breakfast' || startMeal == 'Lunch' || startMeal == 'Dinner') {
+        totalMeals++;
+      }
+
+      // Adding meals for the days in between
+      totalMeals += (daysDifference * 3); // Assuming each day has 3 meals
+
+      // Adding one meal for the end day
+      if (endMeal == 'Breakfast' || endMeal == 'Lunch' || endMeal == 'Dinner') {
+        totalMeals++;
+      }
+    }
+
+    return totalMeals;
+  }
+  void saveDataAndShowDialog() {
+    // Convert DateTime objects to Timestamps
+    Timestamp startTimestamp = Timestamp.fromDate(startDate);
+    Timestamp endTimestamp = Timestamp.fromDate(endDate);
+
+    // Save to Firestore
+    FirebaseAuth _auth=FirebaseAuth.instance;
+    String? username=_auth.currentUser?.displayName;
+    FirebaseFirestore.instance.collection('leave_requests').add({
+      'userName': username,
+      'startDateTime': startTimestamp, // Use startDateTime instead of dateTime
+      'endDateTime': endTimestamp, // Use endDateTime instead of dateTime
+      'startMeal': startMeal,
+      'endMeal': endMeal,
+      'totalMeals': calculateTotalMeals(), // Calculate total meals
+      'type': 'Long'
+    }).then((value) {
+      // Show confirmation dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Row(
+              children: <Widget>[
+                Icon(Icons.check_circle, color: Colors.green),
+                SizedBox(width: 10),
+                Text('Successfully applied from date\n'+startDate.toString()+' to\n '+endDate.toString()+'\nHappy holidays!'),
+              ],
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }).catchError((error) {
+      // Handle errors if any
+      print('Error saving data: $error');
+      print('Error saving data: $error');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Leave Application'),
       ),
-      body: Column(
-        children: [
-          Image(
-            image: Image.asset('assets/takeleave.png').image,
-            height: 250,
-          ),
-          Container(
-            height: 400.0,
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 31, 40, 62),
-              borderRadius: BorderRadius.circular(16.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image(
+              image: Image.asset('assets/food_leave_image.jpg').image,
+              height: 240,
             ),
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              // Use SingleChildScrollView to handle overflow
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Leave Type:',
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  Row(
+            Padding(
+              padding: EdgeInsets.only(left: 8.0, right: 6.0, top: 4.0),
+              child: Container(
+                height: 500.0,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 31, 40, 62),
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  // Use SingleChildScrollView to handle overflow
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Radio(
-                        value: true,
-                        groupValue: isSingleDayLeave,
-                        onChanged: (value) {
-                          setState(() {
-                            isSingleDayLeave = value;
-                          });
-                        },
+                      Text(
+                        'Leave Type:',
+                        style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
-                      Text('Single Day Leave',
-                          style: TextStyle(color: Colors.white)),
-                      Radio(
-                        value: false,
-                        groupValue: isSingleDayLeave,
-                        onChanged: (value) {
-                          setState(() {
-                            isSingleDayLeave = value;
-                          });
-                        },
-                      ),
-                      Text('Multi-Day Leave',
-                          style: TextStyle(color: Colors.white)),
+
+                      if (isSingleDayLeave == false) // Check for null or false
+                        Column(
+                          children: [
+                            SizedBox(height: 20.0),
+                            DatePickerField(
+                              label: 'Start Date',
+                              selectedDate: startDate,
+                              onDateSelected: (date) {
+                                setState(() {
+                                  startDate = date;
+                                });
+                              },
+                            ),
+                            DropdownButtonFormField<String>(
+                              style: TextStyle(color: Colors.white),
+                              dropdownColor: Color.fromARGB(255, 31, 40, 62),
+
+                              padding: EdgeInsets.only(top: 20.0),
+                              value: startMeal,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  startMeal = newValue;
+                                });
+                              },
+                              items: meals.map<DropdownMenuItem<String>>((String meal) {
+                                return DropdownMenuItem<String>(
+                                  value: meal,
+                                  child: Text(meal),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                labelText: 'Start Meal',
+        labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
+                              ),
+                            ),
+
+                            // DatePickerField for End Date
+                            DatePickerField(
+
+                              label: 'End Date',
+                              selectedDate: endDate,
+                              onDateSelected: (date) {
+                                setState(() {
+                                  endDate = date;
+                                });
+                              },
+                            ),
+
+                            // Dropdown for selecting End Meal
+                            DropdownButtonFormField<String>(
+
+                              style: TextStyle(color: Colors.white),
+                              dropdownColor: Color.fromARGB(255, 31, 40, 62),
+                              padding: EdgeInsets.only(top: 20.0),
+                              value: endMeal,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  endMeal = newValue;
+                                });
+                              },
+                              items: meals.map<DropdownMenuItem<String>>((String meal) {
+                                return DropdownMenuItem<String>(
+                                  value: meal,
+                                  child: Text(meal),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+
+                                labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
+                                labelText: 'End Meal',
+                              ),
+                            ),
+
+
+                          ],
+                        ),
+                      SizedBox(height: 20.0),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _applyLeave,
+                          child: Text('Apply'),
+                        ),
+                      )
                     ],
                   ),
-                  if (isSingleDayLeave == false) // Check for null or false
-                    Column(
-                      children: [
-                        SizedBox(height: 20.0),
-                        Text(
-                          'Leave Dates:',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        DatePickerField(
-                          label: 'Start Date',
-                          selectedDate: startDate,
-                          onDateSelected: (date) {
-                            setState(() {
-                              startDate = date;
-                            });
-                          },
-                        ),
-                        DatePickerField(
-                          label: 'End Date',
-                          selectedDate: endDate,
-                          onDateSelected: (date) {
-                            setState(() {
-                              endDate = date;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: _applyLeave,
-                    child: Text('Apply'),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

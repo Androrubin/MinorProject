@@ -27,10 +27,10 @@ class ExtrasScreen extends StatelessWidget {
                 child:
               ElevatedButton(
                 onPressed: () {
-                  // Implement your Google Sign-In logic here
+
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blueGrey,
+                  backgroundColor: Colors.blueGrey,
                   // Button background color
                 ),
                 child: Padding(
