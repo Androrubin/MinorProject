@@ -225,7 +225,7 @@ class _selectedItemCardState extends State<SelectedItemCard> {
                           height: 100,
                         ),
                         Container(
-                          width: 70,
+                          width: 65,
                           child: Column(
                             children: [
                               Padding(

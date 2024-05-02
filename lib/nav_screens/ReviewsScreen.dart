@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ReviewPage extends StatefulWidget {
@@ -22,6 +23,8 @@ class _ReviewPageState extends State<ReviewPage> {
   int _threeStarVotes = 10;
   int _twoStarVotes = 5;
   int _oneStarVotes = 5;
+  int yes=8736;
+  int no=520;
 
   TextEditingController _menuChangesController = TextEditingController();
   TextEditingController _timingChangesController = TextEditingController();
@@ -36,200 +39,212 @@ class _ReviewPageState extends State<ReviewPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(left: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Register complaints',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
               Card(
-                margin: EdgeInsets.only(left: 5,right: 5),
-                color: Color.fromARGB(255, 150, 160, 190),
+                margin: EdgeInsets.only(right: 10),
+                color: Colors.white,
+                elevation: 15,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreatePostScreen()),
-                      );
-                    },
-                    child: Card(
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      color: Color.fromARGB(255, 31, 40, 62),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Container(
-                        width: 400,
-                        height: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreatePostScreen()),
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 150,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Center(
+                            child: Icon(
                               Icons.comment,
                               size: 50,
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 150, 160, 190),
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Complaints',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Complaints',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'To register a mess complaint, click here',
+                                  style: TextStyle(color: Color.fromARGB(255, 150, 160, 190)),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 5),
-                            Text(
-                              'To register a mess complaint, click here',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Mess Review',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  'Rate the mess',
+                  style: TextStyle(fontSize: 17),
+                ),
+              ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _rating = 1.0;
+                          });
+                        },
+                        child: Icon(
+                          _rating >= 1 ? Icons.star : Icons.star_border,
+                          size: 40,
+                          color: Colors.orange,
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _rating = 2.0;
+                          });
+                        },
+                        child: Icon(
+                          _rating >= 2 ? Icons.star : Icons.star_border,
+                          size: 40,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _rating = 3.0;
+                          });
+                        },
+                        child: Icon(
+                          _rating >= 3 ? Icons.star : Icons.star_border,
+                          size: 40,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _rating = 4.0;
+                          });
+                        },
+                        child: Icon(
+                          _rating >= 4 ? Icons.star : Icons.star_border,
+                          size: 40,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _rating = 5.0;
+                          });
+                        },
+                        child: Icon(
+                          _rating >= 5 ? Icons.star : Icons.star_border,
+                          size: 40,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Do you want any changes in the menu?',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _menuChangesController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your response here',
                     ),
                   ),
-                ),
-              ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Do you want any changes in mess timings?',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _timingChangesController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your response here',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'How was the cleanliness in the mess?',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _varietyOfDishesController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your response here',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'How was the variety of dishes offered?',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _timingChangesController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your response here',
+                    ),
+                  ),
               SizedBox(height: 20),
-              Text(
-                'How would you rate our mess?',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              _buildVotingPercentage(10),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _rating = 1.0;
-                      });
-                    },
-                    child: Icon(
-                      _rating >= 1 ? Icons.star : Icons.star_border,
-                      size: 40,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _rating = 2.0;
-                      });
-                    },
-                    child: Icon(
-                      _rating >= 2 ? Icons.star : Icons.star_border,
-                      size: 40,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _rating = 3.0;
-                      });
-                    },
-                    child: Icon(
-                      _rating >= 3 ? Icons.star : Icons.star_border,
-                      size: 40,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _rating = 4.0;
-                      });
-                    },
-                    child: Icon(
-                      _rating >= 4 ? Icons.star : Icons.star_border,
-                      size: 40,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _rating = 5.0;
-                      });
-                    },
-                    child: Icon(
-                      _rating >= 5 ? Icons.star : Icons.star_border,
-                      size: 40,
-                      color: Colors.orange,
-                    ),
-                  ),
+              _buildVotingPercentage(10),
+
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
-                'Do you want any changes in the menu?',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _menuChangesController,
-                decoration: InputDecoration(
-                  hintText: 'Type your response here',
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Do you want any changes in mess timings?',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _timingChangesController,
-                decoration: InputDecoration(
-                  hintText: 'Type your response here',
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'How was the cleanliness in the mess?',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _varietyOfDishesController,
-                decoration: InputDecoration(
-                  hintText: 'Type your response here',
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'How was the variety of dishes offered?',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _timingChangesController,
-                decoration: InputDecoration(
-                  hintText: 'Type your response here',
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Voting percentages:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              _buildVotingPercentage(_totalVotes-10),
-              SizedBox(height: 20),
-              _buildVotingPercentage(_totalVotes-10),
-              SizedBox(height: 20),
-              _buildVotingPercentage( _totalVotes-20),
-              SizedBox(height: 20),
-              _buildVotingPercentage(_totalVotes-36),
-              SizedBox(height: 20),
-              _buildVotingPercentage( _totalVotes-10),
-              SizedBox(height: 20),
-              _buildVotingPercentage( _totalVotes-5),
-
-            ],
-          ),
         ),
       ),
+
+
       bottomNavigationBar: Container(
         margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Card(
@@ -263,66 +278,51 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   Widget _buildVotingPercentage(int percentage) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Container(
-                width: double.maxFinite,
-                height: 200,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20),
-                      Text(
-                        'Voting Percentage: Mess staff behaviour: $percentage%',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 20),
-                      LinearProgressIndicator(
-                        value: percentage / 100,
-                        backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorDark),
-                      ),
-                      Text(
-                        'Voting Percentage: Good variety of sweets: $percentage%',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 20),
-                      LinearProgressIndicator(
-                        value: percentage / 100,
-                        backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorDark),
-                      ),
-                      Text(
-                        'Voting Percentage: Cleanliness $percentage%',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 20),
-                      LinearProgressIndicator(
-                        value: percentage / 100,
-                        backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorDark),
-                      ),
-
-                    ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 20,
+            width: 330,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
+            child: Row(
+              children: [
+                Flexible(
+                  flex: yes,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), bottomLeft: Radius.circular(30)),
+                    ),
                   ),
-
                 ),
-              ),
-            );
-          },
-        );
-      },
-      child: LinearProgressIndicator(
-        value: percentage / 100,
-        backgroundColor: Colors.grey[300],
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                Flexible(
+                  flex: no,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('${yes.toString()} Yes'),
+              Text('${no.toString()} Yes'),
+            ],
+          )
+        ],
       ),
     );
+
   }
   void saveReview() async {
     // Save the review data to Firestore
@@ -367,12 +367,38 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
 }
-class CommunitySection extends StatefulWidget {
+class PreviousComplaints extends StatefulWidget {
   @override
-  _CommunitySectionState createState() => _CommunitySectionState();
+  _PreviousComplaintsState createState() => _PreviousComplaintsState();
 }
+Future<String?> getRollNumber() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.setString('rollNumber', rollNumber);
+  return prefs.getString('rollNumber');
+}
+class _PreviousComplaintsState extends State<PreviousComplaints> {
 
-class _CommunitySectionState extends State<CommunitySection> {
+  int _totalVotes = 100;
+  List<int> _votingPercentages = [0, 0, 0, 0];
+  late String rollNumber;
+  void _vote(int index) {
+    setState(() {
+      _votingPercentages[index] += 1;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getRollNumber().then((value) {
+      setState(() {
+        rollNumber = value ?? '';
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -388,7 +414,7 @@ class _CommunitySectionState extends State<CommunitySection> {
             return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No previous available.'));
+            return Center(child: Text('No previous complaints available.'));
           }
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
@@ -400,7 +426,6 @@ class _CommunitySectionState extends State<CommunitySection> {
               return PostCard(
                 post: post,
                 onUpdate: () {
-                  // This empty function will force the widget to rebuild when the data changes
                   setState(() {});
                 },
                 key: Key(post.id),
@@ -571,7 +596,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       }
     });
   }
+  late String rollNumber;
 
+  @override
+  void initState() {
+    super.initState();
+
+    getRollNumber().then((value) {
+      setState(() {
+        rollNumber = value ?? '';
+      });
+    });
+  }
+  Future<String?> getRollNumber() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString('rollNumber', rollNumber);
+    return prefs.getString('rollNumber');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -581,7 +622,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           // Navigate to a screen where user can create a new post
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CommunitySection()),
+            MaterialPageRoute(builder: (context) => PreviousComplaints()),
           );
         },
         child: Icon(Icons.history, color: Colors.white,),

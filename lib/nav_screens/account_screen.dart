@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:messmaven_minor_project/Screens/FineHistory/fine.dart';
 import 'package:messmaven_minor_project/Screens/extra_history/extraitemDrop.dart';
 import 'package:messmaven_minor_project/Screens/leave_history/leaveSL.dart';
 import 'package:messmaven_minor_project/services/auth_service.dart';
@@ -26,6 +27,7 @@ class _AccountScreenState extends State<AccountScreen>{
   Widget build(BuildContext context) {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     getData();
+    String? username=_auth.currentUser?.displayName;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -130,7 +132,8 @@ class _AccountScreenState extends State<AccountScreen>{
                                         color: Colors.grey),
                                     textAlign: TextAlign.start,
                                   ),
-                                  Text('Abhishek Bharti',
+
+                                  Text(username!,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 18,
@@ -518,7 +521,12 @@ class _AccountScreenState extends State<AccountScreen>{
                                     fontSize: 18),
                               ),
                               IconButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => MessFineHistoryPage()),
+                                    );
+                                  },
                                   icon: Icon(Icons.arrow_forward_rounded
                                     ,color: Colors.white,)
                               )],

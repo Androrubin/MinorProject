@@ -41,9 +41,12 @@ dependencies:
   fluttertoast: ^8.0.6
   firebase_auth: any
   firebase_core: any
+  shared_preferences: ^2.0.9
+  openfoodfacts: ^3.6.1
   google_sign_in: ^6.1.5
   cloud_firestore: ^4.9.3
   image_picker: any
+  google_fonts: ^4.0.3
   camera: any
   flutter_calendar_carousel: any
   image: any

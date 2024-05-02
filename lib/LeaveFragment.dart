@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
 
 class LeaveApplicationPage extends StatefulWidget {
   @override
@@ -39,7 +38,6 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
               onPressed: () {
 
 
-                // Close the confirmation dialog
                 Navigator.of(context).pop();
                 saveDataAndShowDialog();
                 ScaffoldMessenger.of(context).showSnackBar(

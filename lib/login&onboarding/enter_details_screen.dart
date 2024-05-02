@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'package:messmaven_minor_project/nav_screens/base_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentInfoForm extends StatefulWidget {
   @override
@@ -171,7 +172,10 @@ class _StudentInfoFormState extends State<StudentInfoForm> {
                           "roll no": rollNumber,
                           "hostel": hostel,
                         });
-
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.setString('name', name);
+                        prefs.setString('rollNumber', rollNumber);
+                        prefs.setString('hostel', hostel);
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (_) => BaseScreen()));
                         //   print(

@@ -88,7 +88,7 @@ class _ExtraPageState extends State<ExtraPage>{
                           ),),
 
                             Visibility(
-                              visible: isButtonVisible, // Show the button when there are selected items
+                              visible: true, // Show the button when there are selected items
                               child: InkWell(
                                 onTap: () {
                                   if (selectedItems.isNotEmpty) {

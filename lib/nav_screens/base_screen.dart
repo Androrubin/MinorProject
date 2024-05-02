@@ -4,6 +4,7 @@ import 'package:messmaven_minor_project/LandingPage.dart';
 import 'package:messmaven_minor_project/login&onboarding/splash_screen.dart';
 import 'package:messmaven_minor_project/nav_screens/surveys_screen.dart';
 
+import '../Screens/FoodFacts.dart';
 import '../Screens/extras_page.dart';
 import 'ReviewsScreen.dart';
 import 'account_screen.dart';
